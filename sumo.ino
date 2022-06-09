@@ -30,6 +30,7 @@
 Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 #define DISTANCIA_MIN 40
+#define VEL 100
 
 int lecdelantero = 0;
 int lectrasero = 0;
@@ -168,8 +169,8 @@ void perseguir() {
 		dir_der = HIGH;
 	}
 
-	analogWrite(pwma, 100 * dir_izq);
-	analogWrite(pwmb, 100 * dir_der);
+	analogWrite(pwma, VEL * dir_izq);
+	analogWrite(pwmb, VEL * dir_der);
 
 	girar_llanta_izq(dir_izq);
 	girar_llanta_der(dir_der);
@@ -179,7 +180,7 @@ void perseguir() {
 byte distancia_sonic() {
 
 	digitalWrite(trig, HIGH);
-	delay(1);
+	delay(1VEL
 	digitalWrite(trig, LOW);
 	delay(30);
 
@@ -239,8 +240,8 @@ bool se_sale() {
 
 void regresar_borde() {
 	do {
-		analogWrite(pwma, 100);
-		analogWrite(pwmb, 100);
+		analogWrite(pwma, VEL);
+		analogWrite(pwmb, VEL);
 
 		girar_llanta_izq(false);
 		girar_llanta_der(false);
@@ -252,8 +253,8 @@ void regresar_borde() {
 void regresar_borde_izq() {
 	regresar_borde();
 
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	analogWrite(pwma, VEL);
+	analogWrite(pwmb, VEL);
 
 	girar_llanta_izq(true);
 	girar_llanta_der(false);
@@ -263,8 +264,8 @@ void regresar_borde_izq() {
 void regresar_borde_der() {
 	regresar_borde();
 
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	analogWrite(pwma, VEL);
+	analogWrite(pwmb, VEL);
 
 	girar_llanta_izq(false);
 	girar_llanta_der(true);
@@ -273,8 +274,8 @@ void regresar_borde_der() {
 
 void regresar_atras() {
 	do {
-		analogWrite(pwma, 100);
-		analogWrite(pwmb, 100);
+		analogWrite(pwma, VEL);
+		analogWrite(pwmb, VEL);
 
 		girar_llanta_izq(true);
 		girar_llanta_der(true);

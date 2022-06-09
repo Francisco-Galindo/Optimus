@@ -56,18 +56,18 @@ int tras_der = 0;
 const byte trig = 9;
 const byte echo = 10;
 
-const byte pwma = 8;
-const byte pwmb = 2;
+const byte pwma = 13;
+const byte pwmb = 7;
 
-const byte stby = 5;
+const byte stby = 10;
 
 /* Izquierda */
-const byte ain1 = 6;
-const byte ain2 = 7;
+const byte ain1 = 11;
+const byte ain2 = 12;
 
 /* Derecha */
-const byte bin1 = 4;
-const byte bin2 = 3;
+const byte bin1 = 9;
+const byte bin2 = 8;
 
 
 void setup() {
@@ -280,6 +280,7 @@ void regresar_atras() {
 
 		girar_llanta_izq(true);
 		girar_llanta_der(true);
+		delay(5);
 	} while (en_borde_tras_izq() || en_borde_tras_der());
 	delay(100);
 }

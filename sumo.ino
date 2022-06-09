@@ -29,8 +29,8 @@
 
 Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
-#define DISTANCIA_MIN 40
-#define VEL 100
+#define DISTANCIA_MIN 30 // La distancia en cm para detectar otras cosas
+#define VEL 100 // Velocidad de los motores
 #define VALOR_IR 1 // Cambiar a 0 en caso de que las lectutras de los sensores infrarrojos sean las contrarias
 
 int lecdelantero = 0;

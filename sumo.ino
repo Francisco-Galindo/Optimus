@@ -25,6 +25,10 @@
 
  */
 
+#include "Adafruit_VL53L0X.h"
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+
 #define DISTANCIA_MIN 40
 
 int lecdelantero = 0;
@@ -50,8 +54,8 @@ int tras_der = 0;
 const byte trig = 9;
 const byte echo = 10;
 
-const byte pwma = 2;
-const byte pwmb = 8;
+const byte pwma = 8;
+const byte pwmb = 2;
 
 const byte stby = 5;
 
@@ -87,7 +91,16 @@ void setup() {
 
 	digitalWrite(stby, HIGH);
 
-	Serial.begin(9600);
+	Serial.begin(115200);
+	while (!Serial) {
+		delay(1);
+	}
+
+	if (!lox.begin()) {
+		Serial.println(F("Sensor todo muerto :("));
+		while(1);
+	}
+
 	delay(5000);
 }
 
@@ -102,7 +115,7 @@ void loop() {
 		} else if (en_borde_del_der()) {
 			regresar_borde_der();
 		} else {
-			avanzar();
+			regresar_atras();
 		}
 
 	} else {
@@ -129,8 +142,8 @@ void tornado() {
 	analogWrite(pwma, 100);
 	analogWrite(pwmb, 100);
 	if (ahora - inicio_busqueda < 5000) {
-		girar_llanta_izq(HIGH);
-		girar_llanta_der(LOW);
+		girar_llanta_izq(LOW);
+		girar_llanta_der(HIGH);
 	} else if (ahora - inicio_busqueda < 6000) {
 		girar_llanta_izq(HIGH);
 		girar_llanta_der(HIGH);
@@ -175,8 +188,15 @@ byte distancia_sonic() {
 	return duracion / 58.2;
 }
 
-bool distancia_der() {
-	return false;
+long distancia_der() {
+	VL53L0X_RangingMeasurementData_t measure;
+	lox.rangingTest(&measure, false);
+
+	if (measure.RangeStatus != 4) {
+		return measure.RangeMilliMeter / 10 < DISTANCIA_MIN;
+	} else {
+		return false;
+	}
 }
 
 bool distancia_izq() {
@@ -218,42 +238,53 @@ bool se_sale() {
 }
 
 void regresar_borde() {
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	do {
+		analogWrite(pwma, 100);
+		analogWrite(pwmb, 100);
 
-	girar_llanta_izq(false);
-	girar_llanta_der(false);
-	delay(300);
+		girar_llanta_izq(false);
+		girar_llanta_der(false);
+		delay(5);
+	} while (en_borde_del_izq() && en_borde_del_der);
+	delay(100);
 }
 
 void regresar_borde_izq() {
 	regresar_borde();
 
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	do {
+		analogWrite(pwma, 100);
+		analogWrite(pwmb, 100);
 
-	girar_llanta_izq(true);
-	girar_llanta_der(false);
-	delay(300);
+		girar_llanta_izq(true);
+		girar_llanta_der(false);
+		delay(5);
+	} while (en_borde_del_izq());
+	delay(100);
 }
 
 void regresar_borde_der() {
 	regresar_borde();
 
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	do {
+		analogWrite(pwma, 100);
+		analogWrite(pwmb, 100);
 
-	girar_llanta_izq(false);
-	girar_llanta_der(true);
-	delay(300);
+		girar_llanta_izq(false);
+		girar_llanta_der(true);
+		delay(5);
+	} while (en_borde_del_der());
+	delay(100);
 }
 
-void avanzar() {
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+void regresar_atras() {
+	do {
+		analogWrite(pwma, 100);
+		analogWrite(pwmb, 100);
 
-	girar_llanta_izq(true);
-	girar_llanta_der(true);
+		girar_llanta_izq(true);
+		girar_llanta_der(true);
+	} while (en_borde_tras_izq() || en_borde_tras_der());
 	delay(100);
 }
 

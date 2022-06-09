@@ -31,6 +31,7 @@ Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 #define DISTANCIA_MIN 40
 #define VEL 100
+#define VALOR_IR 1 // Cambiar a 0 en caso de que las lectutras de los sensores infrarrojos sean las contrarias
 
 int lecdelantero = 0;
 int lectrasero = 0;
@@ -140,8 +141,8 @@ void loop() {
 
 void tornado() {
 	const long int ahora = millis();
-	analogWrite(pwma, 100);
-	analogWrite(pwmb, 100);
+	analogWrite(pwma, VEL);
+	analogWrite(pwmb, VEL);
 	if (ahora - inicio_busqueda < 5000) {
 		girar_llanta_izq(LOW);
 		girar_llanta_der(HIGH);
@@ -180,7 +181,7 @@ void perseguir() {
 byte distancia_sonic() {
 
 	digitalWrite(trig, HIGH);
-	delay(1VEL
+	delay(1);
 	digitalWrite(trig, LOW);
 	delay(30);
 
@@ -228,7 +229,7 @@ bool en_borde_tras_der() {
 }
 
 bool en_borde(byte pin_sensor) {
-	return digitalRead(pin_sensor);
+	return digitalRead(pin_sensor) == VALOR_IR;
 }
 
 bool se_sale() {

@@ -98,7 +98,7 @@ void loop() {
 		if (en_borde_del_izq() && en_borde_del_der()) {
 			regresar_borde();
 		} else if (en_borde_del_izq()) {
-			regresar_borde_del_izq();
+			regresar_borde_izq();
 		} else if (en_borde_del_der()) {
 			regresar_borde_der();
 		} else {

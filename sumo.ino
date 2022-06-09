@@ -189,6 +189,10 @@ byte distancia_sonic() {
 }
 
 long distancia_der() {
+	return false;
+}
+
+bool distancia_izq() {
 	VL53L0X_RangingMeasurementData_t measure;
 	lox.rangingTest(&measure, false);
 
@@ -197,10 +201,6 @@ long distancia_der() {
 	} else {
 		return false;
 	}
-}
-
-bool distancia_izq() {
-	return false;
 }
 
 bool algo_enfrente() {
@@ -252,28 +252,22 @@ void regresar_borde() {
 void regresar_borde_izq() {
 	regresar_borde();
 
-	do {
-		analogWrite(pwma, 100);
-		analogWrite(pwmb, 100);
+	analogWrite(pwma, 100);
+	analogWrite(pwmb, 100);
 
-		girar_llanta_izq(true);
-		girar_llanta_der(false);
-		delay(5);
-	} while (en_borde_del_izq());
+	girar_llanta_izq(true);
+	girar_llanta_der(false);
 	delay(100);
 }
 
 void regresar_borde_der() {
 	regresar_borde();
 
-	do {
-		analogWrite(pwma, 100);
-		analogWrite(pwmb, 100);
+	analogWrite(pwma, 100);
+	analogWrite(pwmb, 100);
 
-		girar_llanta_izq(false);
-		girar_llanta_der(true);
-		delay(5);
-	} while (en_borde_del_der());
+	girar_llanta_izq(false);
+	girar_llanta_der(true);
 	delay(100);
 }
 

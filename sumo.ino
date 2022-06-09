@@ -53,8 +53,8 @@ int tras_izq = 0;
 const int sens_tras_der = A3;
 int tras_der = 0;
 
-const byte trig = 9;
-const byte echo = 10;
+const byte trig = 6;
+const byte echo = 5;
 
 const byte pwma = 13;
 const byte pwmb = 7;
